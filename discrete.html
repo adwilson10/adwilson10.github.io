@@ -16,6 +16,14 @@
     <!-- Custom styles for this template -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full"></script>
 
   </head>
 
@@ -35,14 +43,14 @@
         </div>
         <div class="navbar-collapse collapse navbar-right">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">HOME</a></li>
+            <li><a href="index.html">HOME</a></li>
             <li><a href="#about">ABOUT</a></li>
             <li><a href="resume.html">RESUME/CV</a></li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">PROJECTS<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="baxter.html">Maximizing Fisher Information with Baxter</a></li>
-                <li><a href="discrete.html">Informative Trajectories using Discrete Mechanics</a></li>
+                <li class="active"><a href="discrete.html">Informative Trajectories using Discrete Mechanics</a></li>
                 <li><a href="pendulum.html">Information Optimization of a Double Pendulum</a></li>
               </ul>
             </li>
@@ -51,41 +59,70 @@
       </div>
     </div>
 
-	<!-- *****************************************************************************************************************
-	 HEADERWRAP
-	 ***************************************************************************************************************** -->
-	<div id="headerwrap">
-					<h1>Hi! I'm.</h1>
-					<h4>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</h4>
-					<h4>More Lorem Ipsum added here too.</h4>				
-	</div><!-- /headerwrap -->
 
+	<!-- *****************************************************************************************************************
+	 BLUE WRAP
+	 ***************************************************************************************************************** -->
+	<div id="blue">
+	    <div class="container">
+			<div class="row">
+				<h3>Informative Trajectories using Discrete Mechanics.</h3>
+			</div><!-- /row -->
+	    </div> <!-- /container -->
+	</div><!-- /blue -->
+
+	<!-- *****************************************************************************************************************
+	 TITLE & CONTENT
+	 ***************************************************************************************************************** -->
+     <div class="project mt pb">
+	 <div class="container" style="padding-bottom:40px">
+	 	<div class="row">		
+		 	<div class="col-xs-12" style="text-align:center">
+                <img src="assets/img/portfolio/disc_pend.jpg" alt="" style="max-height:300px">
+            </div>
+		 	<div class="col-xs-12">
+		 		<h4>Project Overview</h4>
+		 		<p>The goal of this project was to reformulate the optimization algorithm from the double pendulum experiment which uses continuous-time to one using structured integration and structured linearization methods from discrete mechanics. However, the algorithm can be slow to implement because of the need for small time steps using the continous formulation. Using a result of much recent work in the area of discrete mechanics, variational integrators, also known as structured integrators, can be used to provide a time-discretized version of the action integral which results in a symplectic form with stable long-term energy behavior, even with large time-steps.</p>
+		 		<h4>Algorithm Details</h4>
+                <p>In the discrete time format, given a system with a configuration $q\in Q$, where $Q$ is the configuration space, a sequence $\{(t_0, q_0),(t_1,q_1),...,(t_n,q_n)\}$ can be found that approximates a trajectory in continuous time where $q_k\approx q(t_k)$. Instead of numerically integrating differential equations derived from a continuous Lagrangian, $L_c$, a discrete Lagrangian, $L_d$, is chosen such that the action integral is approximated over a discrete time-step.</p>
+                <p>Given the discrete action sum, the DEL equations including forcing have been derived for the discrete-time system by Marsden and West (2001).  The unconstrained DEL equations are given by
+                $$D_2L_d(q_{k-1},q_k,\theta)+F_d^+(q_{k-1},q_k,u_{k-1},\theta)+D_1L_d(q_k,q_{k+1},\theta)+F_d^-(q_k,q_{k+1},u_{k},\theta)=0$$
+                where $F_d^\pm$ are the right and left discrete force approximations of a continuous forcing model, $F_c$.</p>
+		 		<p>In order to create a suitable analog to the continuous time framework, the DEL equations can be rewritten in a one-step map using a discrete momentum term, $p_k$.  The first equation is implicit in terms of $q_{k+1}$ and is solved using a root-finding algorithm. The following is the one-step update of $\{q_k, p_{k+1}\}$
+                $$p_k+D_1L_{k+1}+F^-_{k+1}=0$$
+                $$p_{k+1}=D_2L_{k+1}+F^+_{k+1}$$
+                </p>
+                <p>Using these discrete system states, the same trajectory optimization algorithm is used in the results to follow as the continuous-time case; however, the algorithm itself has been reformulated into a discrete-time framework.   This discrete-time version is extended in the following section to include Fisher information as an additional objective.
+
+                <p><img src="assets/icons/link_icon.png" alt="" style="max-height:25px;padding-right:5px">Full details of the algorithm itself can be found in the paper: <a href="http://nxr.northwestern.edu/sites/default/files/publications/awilson_icra2015.pdf">"Maximizing Fisher Information Using Discrete Mechanics and Projection-Based Trajectory Optimization"</a></p>
+                <h4>Project Results</h4>
+                <p><img src="assets/img/portfolio/disc_time.jpg" alt="" style="max-height:150px;float:right;padding-left:20px">
+                The optimized trajectory improves the Fisher information of the measured trajectory by a factor of 10<sup>2</sup>.  These results can be seen in the table. Using the Cramer-Rao bound,  error estimates in the parameter set will decrease up to a factor of 10<sup>2</sup> due to this increase in Fisher information. While these results show the discrete-time algorithm converging in fewer iterations, we do not expect this trend to be generally true.  In this case, the numerical differences happen to produce a slightly more efficient descent direction. However, even on a per iteration basis, the improvement in computation time is significant. Iterations of the continuous and discrete algorithms were timed in Mathematica on the same 3.0GHz Intel i7 machine. Both algorithms return similar optimized costs, resulting in expected information improvements of 10<sup>2</sup>.
+                </p>
+            </div>
+	 	</div>
+	 </div>
+	 </div>
+     
 	<!-- *****************************************************************************************************************
 	 PORTFOLIO SECTION
 	 ***************************************************************************************************************** -->
 	 <div id="portfoliowrap">
-        <h3>Project Archive.</h3>
+        <h3>Related Projects.</h3>
         <div class="container-fluid portfoliocontainer">
             <div class="row">
 				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
 					<div>
-                        <img src="assets/img/portfolio/baxter.jpg" alt="">
-                        <a href="baxter.html"><span class="text-content">
-                        <h4>Maximizing Fisher Information with Baxter</h4></span></a>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
-					<div>
                         <img src="assets/img/portfolio/disc_pend.jpg" alt="">
-                        <a href="discrete.html"><span class="text-content">
+                        <a href="single-project.html"><span class="text-content">
                         <h4>Informative Trajectories using Discrete Mechanics</h4></span></a>
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
 					<div>
                         <img src="assets/img/portfolio/puppet.jpg" alt="">
-                        <a href="pendulum.html"><span class="text-content">
-                        <h4>Information Optimization of a Double Pendulum</h4></span></a>
+                        <a href="single-project.html"><span class="text-content">
+                        <h4>Information Optimization of Double Pendulum</h4></span></a>
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
@@ -114,11 +151,12 @@
         </div><!-- portfolio container -->
 	 </div><!--/Portfoliowrap -->
 	 
+	 	 
 
 	<!-- *****************************************************************************************************************
 	 FOOTER
 	 ***************************************************************************************************************** -->
-	 <div id="footerwrap"><a name="about"></a>
+	 <div id="footerwrap">
 	 	<div class="container">
 		 	<div class="row">
 		 		<div class="col-lg-4">

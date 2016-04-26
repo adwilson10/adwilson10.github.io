@@ -50,6 +50,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">PROJECTS<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li class="active"><a href="baxter.html">Maximizing Fisher Information with Baxter</a></li>
+                <li><a href="discrete.html">Informative Trajectories using Discrete Mechanics</a></li>
                 <li><a href="pendulum.html">Information Optimization of a Double Pendulum</a></li>
               </ul>
             </li>
@@ -92,7 +93,7 @@
                 $$I(\theta)=\sum_{k=k_0}^{k_f}\Gamma_\theta(t_k)^T\cdot \Sigma^{-1}\cdot \Gamma_\theta(t_k)$$
                 where $\Gamma_\theta$ is the derivative of the output $y$ w.r.t. the parameter $\theta$ given by
                 $$\Gamma_\theta(t_i)=D_xy(x(t_i),u(t_i),\theta) \cdot D_\theta x(x(t_i),u(t_i),\theta)+D_\theta y(x(t_i),u(t_i),\theta).$$</p>
-                <p>Full details of the algorithm can be found in the publication page.
+                <p><img src="assets/icons/link_icon.png" alt="" style="max-height:25px;padding-right:5px">Full details of the algorithm itself can be found in the paper: <a href="papers/awilson_TASE_review.pdf">"Dynamic Task Execution using Active Parameter Identification with the Baxter Research Robot"</a></p>
                 <h4>Project Results</h4>
                 <p><img src="assets/img/portfolio/baxter_table.jpg" alt="" style="max-height:250px;float:right;padding-left:20px">9 trials of the task were run using different initial estimates of the string length without optimizing the estimates. The results are shown in the center column of the table. The task is completed with only two estimates of the length - the actual value of 0.368m and a slightly longer length of 0.388m. The second set of 9 trials is run using the optimization procedure to refine the initial estimates.  The mean estimate of $\ell$ from the 9 trials after 6 seconds was 0.367m with the actual string length set to 0.368m.  The standard deviation of the final estimates is 0.0042m. In all 9 trials, the task of swinging the ball into the box is completed successfully.
                 </p>

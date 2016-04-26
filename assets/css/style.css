@@ -301,6 +301,11 @@ div.portfolio-item div:hover span.text-content {
   margin: 2px;
 }
 
+.resume-btn h5{
+  margin-top:5px;
+  margin-bottom:5px;
+}
+
 /* Resume Wrap */
 .resume-width{
   max-width:1100px;
