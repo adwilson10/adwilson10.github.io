@@ -208,6 +208,7 @@ a:focus {
 	padding-top: 100px;
 	padding-bottom: 50px;
 	text-align: center;
+    margin-bottom:-20px;
 }
 
 #headerwrap h3, #headerwrap h4, #headerwrap h5 {
@@ -220,43 +221,40 @@ a:focus {
 	margin-bottom: 25px;
 }
 
-#headerwrap .img-responsive {
-	margin: 0 auto;
-}
-
 .top-buffer {
   margin-top:20px;
 }
 
 /* Portfolio Wrap */
+.portfoliocontainer {
+  width:80%;
+  max-width:1100px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-top: 20px;
+  padding-bottom:60px;
+}
+
+.nopadding{
+  padding-left:0px;
+  padding-right:0px;
+}
+
 #portfoliowrap {
-    background-color: #95a5b7;
-	padding-top: 40px;
-    padding-bottom:60px;
-	display: block;
-	text-align: center
+  background-color: #95a5b7;
+  text-align: center;
+  display: block;
 }
 
 #portfoliowrap h3 {
 	color: white;
-	margin-bottom: 25px;
+    padding-top:20px;
 }
 
 #portfoliowrap h4, #portfoliowrap h5 {
 	color: white;
 	font-weight: 400;
 }
-
-.portfolio {
-	padding:0 !important;
-    margin-left: 100px;
-	display:block;
-}
-
-
-.portfolio-item .title:before {border-radius:0; display:none}
-.portfolio-item p {margin:0px 0 30px;}
-.portfolio-item h3 {margin:-10px 0 10px; font-size:16px; text-transform:uppercase;}
 
 .text-content {
   background: rgba(0,0,0,0.6);
@@ -300,6 +298,10 @@ div.portfolio-item div:hover span.text-content {
 }
 
 /* Resume Wrap */
+.resume-width{
+  max-width:1100px;
+}
+
 #education {
     background-color: #95a5b7;
 }
@@ -326,6 +328,18 @@ div.portfolio-item div:hover span.text-content {
     margin-right:auto;
 }
 
+#publications {
+    background-color: #95a5b7;
+}
+#publicationswrap {
+	padding-top: 40px;
+    padding-bottom:60px;
+	display: block;
+	text-align: center;
+    width: 80%;
+    margin-left:auto;
+    margin-right:auto;
+}
 
 .tpl6 h3
 {
