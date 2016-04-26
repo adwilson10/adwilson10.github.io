@@ -187,7 +187,11 @@ a:focus {
 }
 
 .mt {
-	margin-top: 60px;
+	padding-top: 40px;
+}
+
+.pb {
+  margin-bottom: -20px;
 }
 
 .hline {
@@ -339,6 +343,14 @@ div.portfolio-item div:hover span.text-content {
     width: 80%;
     margin-left:auto;
     margin-right:auto;
+}
+
+.project {
+  background-color: #e0e4eb;
+}
+
+.project h4 {
+  padding-top: 15px;
 }
 
 .tpl6 h3
