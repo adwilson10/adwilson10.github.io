@@ -270,7 +270,6 @@ a:focus {
 }
 
 .text-content {
-  background: rgba(0,0,0,0.6);
   color: white;
   cursor: pointer;
   position: absolute;
@@ -286,18 +285,39 @@ a:focus {
 }
 
 .text-content h4, .text-content h5{
+  background: rgba(0,0,0,0.7);
   position: absolute;
   display: table-cell;
   margin: auto;
   width: 100%;
   top: 40%;
   padding: 5%;
-
 }
 
 div.portfolio-item div:hover span.text-content {
   opacity: 1;
 }
+
+.text-tablet {
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.text-tablet h4, .text-tablet h5{
+  background: rgba(0,0,0,0.7);
+  position: absolute;
+  display: table-cell;
+  margin: auto;
+  width: 100%;
+  top: 40%;
+  padding: 5%;
+}
+
 
 .resume-btn {
   float: right;

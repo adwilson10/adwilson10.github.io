@@ -49,9 +49,10 @@
             <li class="dropdown active">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">PROJECTS<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="active"><a href="baxter.html">Maximizing Fisher Information with Baxter</a></li>
+                <li><a href="baxter.html">Maximizing Fisher Information with Baxter</a></li>
                 <li><a href="discrete.html">Informative Trajectories using Discrete Mechanics</a></li>
                 <li><a href="pendulum.html">Information Optimization of a Double Pendulum</a></li>
+                <li class="active"><a href="rostrep.html">ROS Bridge for Trep</a></li>
               </ul>
             </li>
           </ul>
@@ -66,7 +67,7 @@
 	<div id="blue">
 	    <div class="container">
 			<div class="row">
-				<h3>Maximizing Fisher Information with Baxter.</h3>
+				<h3>ROS Bridge for Trep.</h3>
 			</div><!-- /row -->
 	    </div> <!-- /container -->
 	</div><!-- /blue -->
@@ -78,30 +79,39 @@
 	 <div class="container" style="padding-bottom:40px">
 	 	<div class="row">		
 		 	<div class="col-xs-12" style="text-align:center">
-                <img src="assets/img/portfolio/baxter.jpg" alt="" style="max-height:300px">
+                <img src="assets/img/portfolio/ros_demo.jpg" alt="" style="max-height:300px">
             </div>
 		 	<div class="col-xs-12">
 		 		<h4>Project Overview</h4>
-		 		<p>One fundamental goal of artificial learning for automation and production is providing the capability for a robot to automatically synthesize actions that improve estimates of the robot's internal dynamics and dynamic models of real-world objects.  Human workers on production lines constantly use dynamic interactions with objects to improve their quality and speed in a manufacturing environment. This project aimed to provide this form of learning on robots using real-time processing of feedback from active exploration of the environment. To provide a realistic scope to the project, I focused on creating a method for real-time active synthesis of dynamic trajectories to estimate a single model parameter in a known dynamical model.</p>
-                <p><img src="assets/icons/github_icon2.png" alt="" style="max-height:25px;padding-right:5px">A portion of the control code using ROS is available on Github: <a href="https://git.io/vwag1">https://git.io/vwag1</a></p>
-		 		<h4>Optimization Algorithm</h4>
-		 		<p>For the project, I attached a mass suspended from a string to the manipulator of Baxter and assumed that the model was known except for the length of the string which is uncertain. The only source of feedback is a load cell that I mounted at the gripper to provide measurement of the string tension over time.  There are two stages to the control problem: First, the unknown parameter must be estimated in the system. After estimation, the second stage is the synthesis of the task trajectory.</p>
-                <p>In order to generate an optimal trajectory for estimation, a cost function involving a metric on Fisher Information is used. For the project, I assumed that one parameter, $\theta$, is uncertain with additive noise on observer measurements but negligible process noise. The system model is given by the following where $\tilde{y}$ is the observed output, $x$ is the state, and $\mathrm{w}_y$ is the measurement noise.</p>
-                <p>$$\dot{x} =f(x,u,\theta) = g(x, \theta) + h(x, \theta) u$$
-                $$\tilde{y}=y(x,u,\theta)+\mathrm{w}_y$$</p>
-                <p>The equation for Fisher Information can be reduced using these assumptions to the following form
-                $$I(\theta)=\sum_{k=k_0}^{k_f}\Gamma_\theta(t_k)^T\cdot \Sigma^{-1}\cdot \Gamma_\theta(t_k)$$
-                where $\Gamma_\theta$ is the derivative of the output $y$ w.r.t. the parameter $\theta$ given by
-                $$\Gamma_\theta(t_i)=D_xy(x(t_i),u(t_i),\theta) \cdot D_\theta x(x(t_i),u(t_i),\theta)+D_\theta y(x(t_i),u(t_i),\theta).$$</p>
-                <p><img src="assets/icons/link_icon.png" alt="" style="max-height:25px;padding-right:5px">Full details of the algorithm itself can be found in the paper: <a href="papers/awilson_TASE_review.pdf">"Dynamic Task Execution using Active Parameter Identification with the Baxter Research Robot"</a></p>
-                <h4>Project Results</h4>
-                <p><img src="assets/img/portfolio/baxter_table.jpg" alt="" style="max-height:250px;float:right;padding-left:20px">9 trials of the task were run using different initial estimates of the string length without optimizing the estimates. The results are shown in the center column of the table. The task is completed with only two estimates of the length - the actual value of 0.368m and a slightly longer length of 0.388m. The second set of 9 trials is run using the optimization procedure to refine the initial estimates.  The mean estimate of $\ell$ from the 9 trials after 6 seconds was 0.367m with the actual string length set to 0.368m.  The standard deviation of the final estimates is 0.0042m. In all 9 trials, the task of swinging the ball into the box is completed successfully.
+		 		<p>Trep is a rigid-body simulation software developed in the NxR Lab at Northwestern by Elliot Johnson. As I continued to use both Trep and ROS (Robot Operating System) for several projects as a PhD student, it became clear that some utilities would be helpful in bridging the two pieces of software. There were two main tools in particular that would be useful. First, a parser that could create a Trep system from a URDF representation and second, a method to automatically advance the Trep simulation at a given ROS timestep. I put these two tools together which have been incorporated into Trep and also packaged on the ROS buildfarm.</p>
+                <p><img src="assets/icons/github_icon2.png" alt="" style="max-height:25px;padding-right:5px">The code for the ROS bridge tools is on Github: <a href="https://git.io/rostrep">https://git.io/rostrep</a></p>
+                <p><img src="assets/icons/ros-dots.png" alt="" style="max-height:25px;padding-right:5px">An example ROS package called is available at: <a href="https://github.com/MurpheyLab/trep_urdf_demo">https://github.com/MurpheyLab/trep_urdf_demo</a></p>
+                
+		 		<h4>Tool Details</h4>
+                <p>The URDF parser creates a Trep system model using certain tags from the URDF XML specification. The following tags are supported:
+                <ul style="margin-left: 20px;">
+                    <li>Link - name</li>
+                        <ul style="margin-left: 25px;">
+                        <li>Inertial</li>
+                            <ul style="margin-left: 25px;">
+                                <li>origin</li>
+                                <li>mass</li>
+                                <li>inertia (only ixx,iyy,izz supported, off-axes should be zero)</li>
+                            </ul>
+                        </ul>
+                    <li>Joint - name, type: fixed, continuous, prismatic (no joint limits)</li>
+                    <ul style="margin-left: 25px;">
+                        <li>origin</li>
+                        <li>parent</li>
+                        <li>child</li>
+                        <li>dynamics (damping only)</li>
+                    </ul>
+                </ul>
+                Additionally, one extra tag is supported on the Joint tag. Specifying kinematic='True' creates a kinematic configuration variable in trep for that joint.
                 </p>
-                <p>A video showing one full trial is available below:</p>
+                <p>
+                The ROSMidpointVI class extends the MidpointVI class available in trep. This class automatically publishes all frames imported from the URDF to the /tf topic every time ROSMidpointVI.step() is called.</p>
             </div>
-		 	<div class="col-xs-12" style="text-align:center;padding-top:30px">
-            <iframe src="https://player.vimeo.com/video/136003169" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-		 	</div>
 	 	</div>
 	 </div>
 	 </div>
@@ -172,6 +182,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
-
+    
   </body>
 </html>
