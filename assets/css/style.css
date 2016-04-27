@@ -229,6 +229,15 @@ a:focus {
   margin-top:20px;
 }
 
+.circular {
+	width: 150px;
+	height: 150px;
+	border-radius: 75px;
+	-webkit-border-radius: 75px;
+	-moz-border-radius: 75px;
+	background: url(../img/andy_profile.jpg) no-repeat;
+	}
+
 /* Portfolio Wrap */
 .portfoliocontainer {
   width:80%;
@@ -350,6 +359,25 @@ div.portfolio-item div:hover span.text-content {
     margin-right:auto;
 }
 
+#publications p{
+  line-height: 20px;
+  font-weight: 400;
+  font-size: 16px; 
+ }
+ 
+#experience p{
+  line-height: 16px;
+  font-weight: 400;
+  font-size: 15px; 
+ }
+
+ 
+#footerwrap p{
+  line-height: 18px;
+  font-weight: 400;
+  font-size: 16px; 
+ }
+ 
 .project {
   background-color: #e0e4eb;
 }
@@ -398,7 +426,7 @@ div.portfolio-item div:hover span.text-content {
 #footerwrap {
 	padding-top: 60px;
 	padding-bottom: 60px;
-	background: #384452;
+	background: #003d66;
 }
 
 #footerwrap p {
@@ -417,6 +445,23 @@ div.portfolio-item div:hover span.text-content {
 
 #footerwrap i:hover {
 	color: #00b3fe
+}
+
+#footer {
+	background: #384452;
+	padding-bottom: 40px;
+    padding-top: 20px;
+}
+
+#footer a{
+    color: #bfc9d3;
+}
+
+#footer p {
+	color: #bfc9d3;
+    text-align:center;
+    font-size: 14px;
+    line-height: 14px;
 }
 
 /*	################################################################
