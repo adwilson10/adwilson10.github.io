@@ -51,8 +51,8 @@
               <ul class="dropdown-menu">
                 <li><a href="baxter.html">Maximizing Fisher Information with Baxter</a></li>
                 <li><a href="discrete.html">Informative Trajectories using Discrete Mechanics</a></li>
-                <li class="active"><a href="pendulum.html">Information Optimization of a Double Pendulum</a></li>
-                <li><a href="quads.html">Kinect Feedback for Quadrotor Hover</a></li>
+                <li><a href="pendulum.html">Information Optimization of a Double Pendulum</a></li>
+                <li class="active"><a href="quads.html">Kinect Feedback for Quadrotor Hover</a></li>
                 <li><a href="rostrep.html">ROS Bridge for Trep</a></li>
                 <li><a href="gibbot.html">Mechatronics Redesign of the Gibbot</a></li>
               </ul>
@@ -69,7 +69,7 @@
 	<div id="blue">
 	    <div class="container">
 			<div class="row">
-				<h3>Information Optimization of a Double Pendulum.</h3>
+				<h3>Kinect Feedback for Quadrotor Hover.</h3>
 			</div><!-- /row -->
 	    </div> <!-- /container -->
 	</div><!-- /blue -->
@@ -81,27 +81,25 @@
 	 <div class="container" style="padding-bottom:40px">
 	 	<div class="row">		
 		 	<div class="col-xs-12" style="text-align:center">
-                <img src="assets/img/portfolio/pendulum.jpg" alt="" style="max-height:300px">
+                <img src="assets/img/portfolio/quads.jpg" alt="" style="max-height:300px">
             </div>
 		 	<div class="col-xs-12">
 		 		<h4>Project Overview</h4>
-		 		<p>Estimation of model parameters in a dynamic system can be significantly improved with the choice of experimental trajectory.  For general, nonlinear dynamic systems, finding globally "best" trajectories is typically not feasible; however, given an initial estimate of the model parameters and an initial trajectory, I worked to create a continuous-time optimization method that produces a locally optimal trajectory for parameter estimation in the presence of measurement noise.  The optimization algorithm is formulated to find system trajectories that improve a norm on the Fisher information matrix.  A double-pendulum cart apparatus is used to numerically and experimentally validate this technique. The experimental setup consists of a differential drive mobile robot with magnetic wheels moving in a plane. The pivot point for the first link of the double pendulum is provided by mounts on the robot.</p>
-                <p>The control input to the system is the acceleration of the cart, given by $u$.  The cart can accelerate in either direction with positive acceleration to the right. Rotational friction is modeled at each pendulum joint, but the joints remain unactuated.  The goal of the optimization algorithm is to accurately estimate the mass of the top pendulum link and the damping coefficient of the joints.</p>
-                <p><img src="assets/icons/github_icon2.png" alt="" style="max-height:25px;padding-right:5px">A portion of the tracking code using ROS is available on Github: <a href="https://git.io/adwpend">https://git.io/adwpend</a></p>
-		 		<h4>Experiment Setup</h4>
-                <p><img src="assets/img/portfolio/all_clouds.png" alt="" style="max-height:250px;float:right;padding-left:20px"></p>
-		 		<p>A Microsoft Kinect is employed to track the system and obtain experimental measurements.  The Kinect provides uncolored point clouds at 30 Hz, and the Point Cloud Library (PCL) is used for data processing.  Each raw point cloud is first downsampled, and then pass-through filters eliminate points that lie outside of a predetermined bounding box of expected system configurations.  A Euclidean cluster extraction algorithm is then used to extract three separate clouds -- one for the robot and one for each of the links. The pendulum links are made from an acrylic that is transparent to the Kinect; opaque markers adhered to each of the links provide a visible surface.  The markers have a gap between them ensuring that the software uniquely detects the three clusters.  The coefficients of the line equations along the axis of each link are then extracted using a sample consensus segmentation filter on the clusters representing the links.  Once the coefficients for these lines are known, simple trigonometry allows calculation of the desired link angles, $\phi_1$ and $\phi_2$.</p>
+		 		<p>As part of a lab outreach effort, I developed a small quadrotor platform to display for the annual National Robotics Week event at Chicago's Museum of Science and Industry. The hardware for the quadrotor is a small remote control toy commercially available. To allow for custom control code, I replaced the control board with a custom PCB containing a PIC32 microcontroller, wireless chip, and motor drivers. The goal of the quadrotor was to hover autonomously as part of an exhibit station using feedback from a Microsoft Kinect.</p>
+                <p><img src="assets/icons/github_icon2.png" alt="" style="max-height:25px;padding-right:5px">The PIC32 control code running on the quadrotor is available on Github: <a href="https://git.io/adwquad">https://git.io/adwquad</a></p>
+                
+		 		<h4>Hardware Details</h4>
+                <p><img src="assets/img/portfolio/board_back.png" alt="" style="max-height:150px;float:right;padding-left:5px"><img src="assets/img/portfolio/board_front.png" alt="" style="max-height:150px;float:right;padding-left:20px">The quadrotor platform uses four simple brushed DC motors for the rotors. I chose to drive them with simple N-channel MOSFETs with a PWM signal. A pair of motors is run using a single 2-channel package. Wireless communication to a computer station is implemented using a XBEE wireless chip over a serial communication protocol. A PIC32 chip serves as the main controller on-board the quadrotor, receiving position feedback from the computer station connected to the Kinect. The loop rate on the Kinect feedback is 30Hz.</p>
 
-                <p><img src="assets/icons/link_icon.png" alt="" style="max-height:25px;padding-right:5px">Full details of the algorithm itself can be found in the paper: <a href="http://nxr.northwestern.edu/sites/default/files/publications/awilson_TRO2014.pdf">"Trajectory Synthesis for Fisher Information Maximization"</a></p>
-                <h4>Project Results</h4>
-                <p><img src="assets/img/portfolio/pend_results.jpg" alt="" style="max-height:250px;float:right;padding-left:20px">After validating the optimization results in simulation, the trajectories were tested on the experimental testbed to determine their experimental effectiveness.  Each trajectory was run on the system with the observed angles and position of the robot recorded by the Kinect tracking system.  Using the batch-least squares estimation method, the best estimates of the parameters were found based on the data collected. Actual values of the parameters for the experimental system were obtained by disassembling the pendulum system.  The mass of each link was determined by individually weighing each link, and the damping coefficient was obtained from a batch-least squares estimate of a single link in a free swinging trajectory. Overall, parameter estimates are greatly improved using the optimized trajectory.
+                <h4>Controller Details</h4>
+                <p>
+                A simple LQR controller runs on the quadrotor itself from a reduced model representing the inertial properties of the quadrotor. On-board feedback is provided from a 6-axis gyro/accelerometer package using a complementarity filter for position control. For autonomous hover, absolute position feedback is necessary to prevent significant drift; therefore, the Kinect is used to provide that feedback. The Point Cloud Library (PCL) is used for data processing from the Kinect signal. A Euclidean cluster extraction algorithm is then used to extract the point cloud for the quadrotor and a centroid calculation is made to determine the quadrotor position.
                 </p>
-                <p>A video showing a comparison of the optimized and initial trajectories is available below:</p>
             </div>
-		 	<div class="col-xs-12" style="text-align:center;padding-top:30px">
-            <iframe width="420" height="275" src="https://www.youtube.com/embed/FeToVZ58y-w" frameborder="0" allowfullscreen></iframe>
-            <iframe width="420" height="275" src="https://www.youtube.com/embed/ejyPveMuzmw" frameborder="0" allowfullscreen></iframe>
-		 	</div>
+		 	<div class="col-xs-12" style="text-align:center">                
+                <img src="assets/img/portfolio/quads2.jpg" alt="" style="max-height:300px;padding:10px">
+                <img src="assets/img/portfolio/quads3.jpg" alt="" style="max-height:300px;padding:10px">
+            </div>
 	 	</div>
 	 </div>
 	 </div>
