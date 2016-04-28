@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="assets/icons/favicon.ico">
 
-    <title>SOLID - Bootstrap 3 Theme</title>
+    <title>A.D.W. | Mechatronics Redesign of the Gibbot</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -55,6 +55,8 @@
                 <li><a href="quads.html">Kinect Feedback for Quadrotor Hover</a></li>
                 <li><a href="rostrep.html">ROS Bridge for Trep</a></li>
                 <li class="active"><a href="gibbot.html">Mechatronics Redesign of the Gibbot</a></li>
+                <li><a href="filtering.html">Filtering and Machine Learning Problem Sets</a></li>
+                <li><a href="helicopter.html">Control Allocation for a Helicopter with On-Blade Flaps</a></li>
               </ul>
             </li>
           </ul>
@@ -85,15 +87,26 @@
             </div>
 		 	<div class="col-xs-12">
 		 		<h4>Project Overview</h4>
-		 		<p></p>
-                <p><img src="assets/icons/github_icon2.png" alt="" style="max-height:25px;padding-right:5px">The PIC32 control code running on the quadrotor is available on Github: <a href="https://git.io/adwquad">https://git.io/adwquad</a></p>
-                
-		 		<h4>Hardware Details</h4>
-                <p></p>
+		 		<p>The Gibbot is a two-link brachiating robot designed to climb along vertical walls. It attaches to the wall surface using electromagnets at the end of each link. A DC motor at the pivot provides torque to actuate the robot during its dynamic swinging motion. The energy pumped into the system by this torque should allow the robot to overcome friction and swing side to side or climb. Northwestern University's NxR Lab uses the Gibbot for research in dynamic locomotion of hybrid mechanical systems. As part of a graduate mechatronics course, I was part of a team tasked to redesign the electrical system and controller for the robot.</p>
 
-                <h4>Controller Details</h4>
-                <p>
+		 		<h4>Hardware Details</h4>
+                <p><img src="assets/img/portfolio/diagram.jpg" alt="" style="max-height:300px;float:right;padding-left:20px">
+                The Gibbot hardware was separated into four subsystems: power, motor control, sensors, and communication. The Gibbot motor and electromagnets require a 22V source, so we decided to use a DC-DC converter to step down to 5V for the control systems power. The converter also provides a better output signal with very low ripple despite any inconsistency in the input. A set of power MOSFETs are used as the switch for the electromagents since they draw very little power in either on or off states and are easy to interface with the PIC.
                 </p>
+                <p>
+                The sensors that were selected included dual axis accelerometers and gyros mounted on each link of the Gibbot to provide body-frame feedback of the system. Additionally, a current sensor was included on the motor for proper feedback for motor control. Finally, 32-bit counters were used for optical encoders that are present at the electromagnets to measure rotation of the Gibbot endpoints.
+                <h4>Controller Details</h4>
+                <p><img src="assets/img/portfolio/gibbot_board.jpg" alt="" style="max-height:300px;float:right;padding-left:20px">
+                The design of the Gibbot circuit was particularly challenging because of the space limitation based on the existing mechanical device. The amount of space that the main circuit board and electrical components could occupy is 2.4" W x 3.6" L x 1.5" H. In order to add the additional circuitry for the accelerometers and gyro components, we decided early in the design phase to create an integrated circuit board with the PIC included to maximize the amount of room we had to work with.
+                </p>
+                <p>
+                The second consideration in the circuit design was to try to isolate the high and low voltage circuitry as much as possible. We decided to create a top layer board which would contain the high voltage motor driver and electromagnet inputs as well as the DC-DC converter. The 5V output from the converter is connected to the lower logic board which contains all of the sensors and the PIC.
+                <p>
+                <p>A basic processing GUI was created to allow a user to quickly setup the Gibbot and set open loop timing values. The GUI also displays a plot of several sensors as the Gibbot program executes. Following the redesign, the Gibbot was able to swing on command in whichever direction desired. The delay times for the open loop swinging motion could also be modified to study different swings. Visual feedback of the sensors was also provided by the Processing GUI. This was all enabled with the addition of the XBee wireless communication module and extra sensors. The PIC32 can also be reprogrammed wirelessly.</p>
+            </div>
+            <div class="col-xs-12" style="text-align:center">                
+                <img src="assets/img/portfolio/gibbot_screen1.jpg" alt="" style="max-height:300px;padding:10px">
+                <img src="assets/img/portfolio/gibbot_screen2.jpg" alt="" style="max-height:300px;padding:10px">
             </div>
 	 	</div>
 	 </div>
@@ -108,40 +121,28 @@
             <div class="row">
 				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
 					<div>
-                        <img src="assets/img/portfolio/disc_pend.jpg" alt="">
-                        <a href="single-project.html"><span class="text-content">
-                        <h4>Informative Trajectories using Discrete Mechanics</h4></span></a>
+                        <img src="assets/img/portfolio/quads.jpg" alt="">
+                        <a href="quads.html">
+                        <span class="text-content hidden-xs hidden-sm"><h4>Kinect Feedback for Quadrotor Hover</h4></span>
+                        <span class="text-tablet hidden-md hidden-lg"><h4>Kinect Feedback for Quadrotor Hover</h4></span></a>
+					</div>
+				</div>                  
+				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
+					<div>
+                        <img src="assets/img/portfolio/baxter.jpg" alt="">
+                        <a href="baxter.html">
+                        <span class="text-content hidden-xs hidden-sm"><h4>Maximizing Fisher Information with Baxter</h4></span>
+                        <span class="text-tablet hidden-md hidden-lg"><h4>Maximizing Fisher Information with Baxter</h4></span></a>
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
 					<div>
                         <img src="assets/img/portfolio/puppet.jpg" alt="">
-                        <a href="single-project.html"><span class="text-content">
-                        <h4>Information Optimization of Double Pendulum</h4></span></a>
+                        <a href="pendulum.html">
+                        <span class="text-content hidden-xs hidden-sm"><h4>Information Optimization of a Double Pendulum</h4></span>
+                        <span class="text-tablet hidden-md hidden-lg"><h4>Information Optimization of a Double Pendulum</h4></span></a>
 					</div>
-				</div>
-				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
-					<div>
-                        <img src="assets/img/portfolio/quads.jpg" alt="">
-                        <a href="single-project.html"><span class="text-content">
-                        <h4>Kinect Feedback for Quadrotor Hover</h4></span></a>
-					</div>
-				</div>
-                <div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
-					<div>
-                        <img src="assets/img/portfolio/ros_demo.jpg" alt="">
-                        <a href="single-project.html"><span class="text-content">
-                        <h4>ROS Bridge for Trep</h4></span></a>
-					</div>
-				</div>   
-				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
-					<div>
-                        <img src="assets/img/portfolio/gibbot.jpg" alt="">
-                        <a href="single-project.html"><span class="text-content">
-                        <h4>Mechatronics Redesign of the Gibbot</h4></span></a>
-					</div>
-				</div>                    
-                    
+				</div>                
             </div><!-- portfolio -->
         </div><!-- portfolio container -->
 	 </div><!--/Portfoliowrap -->

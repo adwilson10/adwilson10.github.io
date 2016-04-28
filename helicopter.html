@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="assets/icons/favicon.ico">
 
-    <title>A.D.W. | ROS Bridge for Trep</title>
+    <title>A.D.W. | Control Allocation for a Helicopter with On-Blade Flaps</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -53,10 +53,10 @@
                 <li><a href="discrete.html">Informative Trajectories using Discrete Mechanics</a></li>
                 <li><a href="pendulum.html">Information Optimization of a Double Pendulum</a></li>
                 <li><a href="quads.html">Kinect Feedback for Quadrotor Hover</a></li>
-                <li class="active"><a href="rostrep.html">ROS Bridge for Trep</a></li>
+                <li><a href="rostrep.html">ROS Bridge for Trep</a></li>
                 <li><a href="gibbot.html">Mechatronics Redesign of the Gibbot</a></li>
                 <li><a href="filtering.html">Filtering and Machine Learning Problem Sets</a></li>
-                <li><a href="helicopter.html">Control Allocation for a Helicopter with On-Blade Flaps</a></li>
+                <li class="active"><a href="helicopter.html">Control Allocation for a Helicopter with On-Blade Flaps</a></li>
               </ul>
             </li>
           </ul>
@@ -71,7 +71,7 @@
 	<div id="blue">
 	    <div class="container">
 			<div class="row">
-				<h3>ROS Bridge for Trep.</h3>
+				<h3>Control Allocation for a Helicopter with On-Blade Flaps.</h3>
 			</div><!-- /row -->
 	    </div> <!-- /container -->
 	</div><!-- /blue -->
@@ -83,38 +83,29 @@
 	 <div class="container" style="padding-bottom:40px">
 	 	<div class="row">		
 		 	<div class="col-xs-12" style="text-align:center">
-                <img src="assets/img/portfolio/ros_demo.jpg" alt="" style="max-height:300px">
+                <img src="assets/img/portfolio/smartflap.jpg" alt="" style="max-height:300px">
             </div>
 		 	<div class="col-xs-12">
 		 		<h4>Project Overview</h4>
-		 		<p>Trep is a rigid-body simulation software developed in the NxR Lab at Northwestern by Elliot Johnson. As I continued to use both Trep and ROS (Robot Operating System) for several projects as a PhD student, it became clear that some utilities would be helpful in bridging the two pieces of software. There were two main tools in particular that would be useful. First, a parser that could create a Trep system from a URDF representation and second, a method to automatically advance the Trep simulation at a given ROS timestep. I put these two tools together which have been incorporated into Trep and also packaged on the ROS buildfarm.</p>
-                <p><img src="assets/icons/github_icon2.png" alt="" style="max-height:25px;padding-right:5px">The code for the ROS bridge tools is on Github: <a href="https://git.io/rostrep">https://git.io/rostrep</a></p>
-                <p><img src="assets/icons/ros-dots.png" alt="" style="max-height:25px;padding-right:5px">An example ROS package called is available at: <a href="https://github.com/MurpheyLab/trep_urdf_demo">https://github.com/MurpheyLab/trep_urdf_demo</a></p>
-                
-		 		<h4>Tool Details</h4>
-                <p>The URDF parser creates a Trep system model using certain tags from the URDF XML specification. The following tags are supported:
-                <ul style="margin-left: 20px;">
-                    <li>Link - name</li>
-                        <ul style="margin-left: 25px;">
-                        <li>Inertial</li>
-                            <ul style="margin-left: 25px;">
-                                <li>origin</li>
-                                <li>mass</li>
-                                <li>inertia (only ixx,iyy,izz supported, off-axes should be zero)</li>
-                            </ul>
-                        </ul>
-                    <li>Joint - name, type: fixed, continuous, prismatic (no joint limits)</li>
-                    <ul style="margin-left: 25px;">
-                        <li>origin</li>
-                        <li>parent</li>
-                        <li>child</li>
-                        <li>dynamics (damping only)</li>
-                    </ul>
-                </ul>
-                Additionally, one extra tag is supported on the Joint tag. Specifying kinematic='True' creates a kinematic configuration variable in trep for that joint.
+		 		<p>During my internship at the NASA Ames Research Center, I began to study the control of helicopters with trailing-edge flaps. These flap mechanisms have been successfully demonstrated on helicopters such as the Kaman helicopters.  The flaps have undergone several full scale wind tunnel tests, including tests for vibration control such as the test for the SMART rotor seen in the above image. Trailing edge flaps were originally studied for use in vibration control using methods similar to individual blade control (IBC) and higher harmonic control (HHC). After completing my internship, I continued to work on studying controllers for these types of aircraft as an undergraduate research project which culminated in my undergraduate honors thesis.</p>
+                <p><img src="assets/icons/link_icon.png" alt="" style="max-height:25px;padding-right:5px">The full details are available in my undergraduate thesis: <a href="papers/Wilson_A_thesis.pdf">"A Control Allocation Method for a Helicopter with On-Blade Control"</a></p>
+		 		<h4>Using Flaps for Primary Control</h4>
+                <p>My results were all performed on a simulation model of a generlized helicopter. The aircraft model used for control development is a linearized model derived from the nonlinear GENHEL (General Helicopter) flight dynamic simulation code which includes dynamics for the trailing edge flap models. This simulation code was originally developed by Sikorsky Aircraft, with extensive models including the aerodynamics of the main rotor, fuselage, and tail rotor. In order to use linear control methods, linear models are derived from the full GENHEL nonlinear model. The model has been linearized in hover for the purpose of the control development in the project. There are 28 states in the linear model which include vehicle, rotor, and engine dynamics. For the model inversion required by the model following controller, the linear model is reduced to 3 states, which are the vehicle angular rates.
                 </p>
+   		 		<h4>Frequency Split Control Allocation</h4>
                 <p>
-                The ROSMidpointVI class extends the MidpointVI class available in trep. This class automatically publishes all frames imported from the URDF to the /tf topic every time ROSMidpointVI.step() is called.</p>
+                I focused on testing a frequency split allocation method which distributed the high frequency commands to the trailing edge flaps and low frequency commands to the swashplate, resulting in the correct overall control of the helicopter.  This frequency split is accomplished using a first order high and low pass filter:
+                $$\text{high pass:}\hspace{.25in} \frac{\tau s}{\tau s+1}$$
+                $$\text{low pass:}\hspace{.25in} \frac{1}{\tau s+1}$$
+                The time constant, $\tau$, serves as the frequency splitting threshold which is used to control the amount of control given to the trailing edge flaps.  From the time constant, the cutoff frequency can be calculated as:
+                $$f_c=\frac{1}{2\pi\tau}$$
+                For the shared control between the trailing edge flaps and swashplate, the low frequency spectrum of command was sent to the swashplate inputs, $\delta_{lat}$, $\delta_{long}$, and the high frequency command was sent the trailing edge flap inputs, $\delta_{1c}$, $\delta_{1s}$.  Since the pedal command is primarily given by the tail rotor, the sum of the low pass and high pass inputs were passed to the pedal input.
+                <p>
+                <p style="text-align:center;margin-left:auto;margin-right:auto;"><img src="assets/img/portfolio/heli_model.jpg" alt="" style="max-height:200px;padding-left:20px">
+                </p>
+                <h4>Project Results</h4>
+                <p>
+                After analyzing the results from both the linear simulations and the full piloted flight simulation, the results showed that the range of response of the trailing edge flaps at a high frequency was limited in scope.  The flaps do compensate for some of the control of the aircraft in degraded conditions; however, the actuators reach their travel limits before significant benefit is realized. Though the control method was very limited with the current system and actuator models, further developments in the trailing edge flap models could eventually increase the benefit of control sharing with greater control authority and travel in the flaps.
             </div>
 	 	</div>
 	 </div>
@@ -129,10 +120,10 @@
             <div class="row">
 				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
 					<div>
-                        <img src="assets/img/portfolio/baxter.jpg" alt="">
-                        <a href="baxter.html">
-                        <span class="text-content hidden-xs hidden-sm"><h4>Maximizing Fisher Information with Baxter</h4></span>
-                        <span class="text-tablet hidden-md hidden-lg"><h4>Maximizing Fisher Information with Baxter</h4></span></a>
+                        <img src="assets/img/portfolio/filtering.jpg" alt="">
+                        <a href="filtering.html">
+                        <span class="text-content hidden-xs hidden-sm"><h4>Filtering and Machine Learning Problem Sets</h4></span>
+                        <span class="text-tablet hidden-md hidden-lg"><h4>Filtering and Machine Learning Problem Sets</h4></span></a>
 					</div>
 				</div>
                 <div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
@@ -141,14 +132,6 @@
                         <a href="quads.html">
                         <span class="text-content hidden-xs hidden-sm"><h4>Kinect Feedback for Quadrotor Hover</h4></span>
                         <span class="text-tablet hidden-md hidden-lg"><h4>Kinect Feedback for Quadrotor Hover</h4></span></a>
-					</div>
-				</div>
-                <div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
-					<div>
-                        <img src="assets/img/portfolio/puppet.jpg" alt="">
-                        <a href="pendulum.html">
-                        <span class="text-content hidden-xs hidden-sm"><h4>Information Optimization of a Double Pendulum</h4></span>
-                        <span class="text-tablet hidden-md hidden-lg"><h4>Information Optimization of a Double Pendulum</h4></span></a>
 					</div>
 				</div>
             </div><!-- portfolio -->

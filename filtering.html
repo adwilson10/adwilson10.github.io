@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="assets/icons/favicon.ico">
 
-    <title>A.D.W. | ROS Bridge for Trep</title>
+    <title>A.D.W. | Filtering and Machine Learning Problem Sets</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -53,9 +53,9 @@
                 <li><a href="discrete.html">Informative Trajectories using Discrete Mechanics</a></li>
                 <li><a href="pendulum.html">Information Optimization of a Double Pendulum</a></li>
                 <li><a href="quads.html">Kinect Feedback for Quadrotor Hover</a></li>
-                <li class="active"><a href="rostrep.html">ROS Bridge for Trep</a></li>
+                <li><a href="rostrep.html">ROS Bridge for Trep</a></li>
                 <li><a href="gibbot.html">Mechatronics Redesign of the Gibbot</a></li>
-                <li><a href="filtering.html">Filtering and Machine Learning Problem Sets</a></li>
+                <li class="active"><a href="filtering.html">Filtering and Machine Learning Problem Sets</a></li>
                 <li><a href="helicopter.html">Control Allocation for a Helicopter with On-Blade Flaps</a></li>
               </ul>
             </li>
@@ -71,7 +71,7 @@
 	<div id="blue">
 	    <div class="container">
 			<div class="row">
-				<h3>ROS Bridge for Trep.</h3>
+				<h3>Filtering and Machine Learning Problem Sets.</h3>
 			</div><!-- /row -->
 	    </div> <!-- /container -->
 	</div><!-- /blue -->
@@ -83,38 +83,28 @@
 	 <div class="container" style="padding-bottom:40px">
 	 	<div class="row">		
 		 	<div class="col-xs-12" style="text-align:center">
-                <img src="assets/img/portfolio/ros_demo.jpg" alt="" style="max-height:300px">
+                <img src="assets/img/portfolio/filtering.jpg" alt="" style="max-height:300px">
             </div>
 		 	<div class="col-xs-12">
 		 		<h4>Project Overview</h4>
-		 		<p>Trep is a rigid-body simulation software developed in the NxR Lab at Northwestern by Elliot Johnson. As I continued to use both Trep and ROS (Robot Operating System) for several projects as a PhD student, it became clear that some utilities would be helpful in bridging the two pieces of software. There were two main tools in particular that would be useful. First, a parser that could create a Trep system from a URDF representation and second, a method to automatically advance the Trep simulation at a given ROS timestep. I put these two tools together which have been incorporated into Trep and also packaged on the ROS buildfarm.</p>
-                <p><img src="assets/icons/github_icon2.png" alt="" style="max-height:25px;padding-right:5px">The code for the ROS bridge tools is on Github: <a href="https://git.io/rostrep">https://git.io/rostrep</a></p>
-                <p><img src="assets/icons/ros-dots.png" alt="" style="max-height:25px;padding-right:5px">An example ROS package called is available at: <a href="https://github.com/MurpheyLab/trep_urdf_demo">https://github.com/MurpheyLab/trep_urdf_demo</a></p>
-                
-		 		<h4>Tool Details</h4>
-                <p>The URDF parser creates a Trep system model using certain tags from the URDF XML specification. The following tags are supported:
-                <ul style="margin-left: 20px;">
-                    <li>Link - name</li>
-                        <ul style="margin-left: 25px;">
-                        <li>Inertial</li>
-                            <ul style="margin-left: 25px;">
-                                <li>origin</li>
-                                <li>mass</li>
-                                <li>inertia (only ixx,iyy,izz supported, off-axes should be zero)</li>
-                            </ul>
-                        </ul>
-                    <li>Joint - name, type: fixed, continuous, prismatic (no joint limits)</li>
-                    <ul style="margin-left: 25px;">
-                        <li>origin</li>
-                        <li>parent</li>
-                        <li>child</li>
-                        <li>dynamics (damping only)</li>
-                    </ul>
-                </ul>
-                Additionally, one extra tag is supported on the Joint tag. Specifying kinematic='True' creates a kinematic configuration variable in trep for that joint.
+		 		<p>As a part of a graduate course on machine learning for robotics, I worked on two applied programming projects to implement an unscented Kalman filter and an artificial neural network to improve tracking performance on a mobile robot dataset.</p>
+                <p style="margin-bottom:0px"><img src="assets/icons/link_icon.png" alt="" style="max-height:25px;padding-right:5px">The full reports are available for download:
+                <ul style="padding-left:50px;margin-top:0px">
+                    <li>The filtering project: <a href="papers/awilson_filters.pdf">"Implementation of the Unscented Kalman Filter with Mobile Robots"</a></li>
+                    <li>The neural network project:<a href="papers/awilson_ml.pdf">"Using Neural Networks to Improve Mobile Robot Dead-Reckoning"</a></li>
+                </ul></p>
+		 		<h4>Unscented Kalman Filter</h4>
+                <p><img src="assets/img/portfolio/filtering_plot1.png" alt="" style="max-height:250px;float:right;padding-left:20px">The unscented Kalman filter is an extension of the Kalman filter and extended Kalman filtering algorithms.  Although the extended Kalman filter was created to handle non-linear functions, for particularly non-linear problems, the extended filter can have very poor performance. The unscented version uses a method of discrete sampling, called an unscented transform, to sample a small set of points in the distribution.  These points, known as sigma points, are then propagated through the non-linear function. This technique tends to have better performance than the extended filter for highly non-linear functions since the mean and variance are captured more accurately.
                 </p>
-                <p>
-                The ROSMidpointVI class extends the MidpointVI class available in trep. This class automatically publishes all frames imported from the URDF to the /tf topic every time ROSMidpointVI.step() is called.</p>
+                <p>The dataset used in this implementation is the MRSLAM_Dataset4 for Robot3. The fleet of robots used in the dataset collection were five iRobot Create platforms which are two-wheeled, differential drive robot platforms.  Each robot has an on-board monocular camera for landmark sensing.
+                </p>
+                <p>Overall, the unscented Kalman filter has been shown to be much more successful at predicting the path of a mobile robot than odometry alone.  The resulting path from the filtering algorithm has a relatively bounded error throughout the path, despite errors in the motion and measurement models.  Because of the simplified version of the unscented Kalman filter, the valid noise covariances that the filter could handle were limited.  Decreasing the measurement noise did cause the updates to rely more heavily on the measurements; however, the difference in overall path is minimal.  An implementation of the more sophisticated localization version may increase the accuracy of the model and range of covariances that can be successfully implemented with the filter.
+                </p>
+                <h4>Neural Network</h4>
+                <p><img src="assets/img/portfolio/network1.png" alt="" style="max-height:250px;float:right;padding-left:20px">The first task was building the training data that will be used to learn a better motion model for the robot. I made the assumption that the model is independent of the robot's world position and orientation.  This allowed for a lower dimensional mapping from the robot's control inputs to changes in the states in the robot's body frame.  The input training set, $X$, for the algorithm consisted of the two control inputs, averaged over a predefined timestep, $dt$.
+                </p>
+                <p>The output training set, $Y$, was the change of states in the body frame of the robot during the defined timestep.  The data for this set comes from the groundtruth data from the experimental dataset which was obtained with a external Vicon camera system tracking the robot's position in the world. A backpropagation algorithm is then used to learn the weights for each layer.  This is accomplished by attempting to minimize the squared error between the network's output and training output.</p>
+                <p>Overall, the neural network was shown to successfully learn an improved model for the robot's motion.  The resulting dead-reckoning path has less error than the simplified model which could be used to improve other algorithms such as Kalman filtering algorithms to incorporate measurements into the system.</p>
             </div>
 	 	</div>
 	 </div>
@@ -135,22 +125,22 @@
                         <span class="text-tablet hidden-md hidden-lg"><h4>Maximizing Fisher Information with Baxter</h4></span></a>
 					</div>
 				</div>
-                <div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
+				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
 					<div>
                         <img src="assets/img/portfolio/quads.jpg" alt="">
                         <a href="quads.html">
                         <span class="text-content hidden-xs hidden-sm"><h4>Kinect Feedback for Quadrotor Hover</h4></span>
                         <span class="text-tablet hidden-md hidden-lg"><h4>Kinect Feedback for Quadrotor Hover</h4></span></a>
 					</div>
-				</div>
-                <div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
+				</div>                 
+				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
 					<div>
                         <img src="assets/img/portfolio/puppet.jpg" alt="">
                         <a href="pendulum.html">
                         <span class="text-content hidden-xs hidden-sm"><h4>Information Optimization of a Double Pendulum</h4></span>
                         <span class="text-tablet hidden-md hidden-lg"><h4>Information Optimization of a Double Pendulum</h4></span></a>
 					</div>
-				</div>
+				</div>                    
             </div><!-- portfolio -->
         </div><!-- portfolio container -->
 	 </div><!--/Portfoliowrap -->
