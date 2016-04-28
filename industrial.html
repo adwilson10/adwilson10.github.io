@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="assets/icons/favicon.ico">
 
-    <title>A.D.W. | Kinect Feedback for Quadrotor Hover</title>
+    <title>A.D.W. | Implementing Telepresence Control on an Industrial Robot Arm</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -61,12 +61,12 @@
                 <li><a href="baxter.html">Maximizing Fisher Information with Baxter</a></li>
                 <li><a href="discrete.html">Informative Trajectories using Discrete Mechanics</a></li>
                 <li><a href="pendulum.html">Information Optimization of a Double Pendulum</a></li>
-                <li class="active"><a href="quads.html">Kinect Feedback for Quadrotor Hover</a></li>
+                <li><a href="quads.html">Kinect Feedback for Quadrotor Hover</a></li>
                 <li><a href="rostrep.html">ROS Bridge for Trep</a></li>
                 <li><a href="gibbot.html">Mechatronics Redesign of the Gibbot</a></li>
                 <li><a href="filtering.html">Filtering and Machine Learning Problem Sets</a></li>
                 <li><a href="helicopter.html">Control Allocation for a Helicopter with On-Blade Flaps</a></li>
-                <li><a href="industrial.html">Implementing Telepresence Control on an Industrial Robot Arm</a></li>
+                <li class="active"><a href="industrial.html">Implementing Telepresence Control on an Industrial Robot Arm</a></li>
               </ul>
             </li>
           </ul>
@@ -81,7 +81,7 @@
 	<div id="blue">
 	    <div class="container">
 			<div class="row">
-				<h3>Kinect Feedback for Quadrotor Hover.</h3>
+				<h3>Implementing Telepresence Control on an Industrial Robot Arm.</h3>
 			</div><!-- /row -->
 	    </div> <!-- /container -->
 	</div><!-- /blue -->
@@ -93,24 +93,20 @@
 	 <div class="container" style="padding-bottom:40px">
 	 	<div class="row">		
 		 	<div class="col-xs-12" style="text-align:center">
-                <img src="assets/img/portfolio/quads.jpg" alt="" style="max-height:300px">
+                <img src="assets/img/portfolio/industrial.jpg" alt="" style="max-height:300px">
             </div>
 		 	<div class="col-xs-12">
 		 		<h4>Project Overview</h4>
-		 		<p>As part of a lab outreach effort, I developed a small quadrotor platform to display for the annual <a href="http://www.nationalroboticsweek.org/">National Robotics Week</a> event at Chicago's <a href="http://www.msichicago.org/">Museum of Science and Industry</a>. The hardware for the quadrotor is a small remote control toy commercially available. To allow for custom control code, I replaced the control board with a custom PCB containing a PIC32 microcontroller, wireless chip, and motor drivers. The goal of the quadrotor was to hover autonomously as part of an exhibit station using feedback from a Microsoft Kinect.</p>
-                <p><img src="assets/icons/github_icon2.png" alt="" style="max-height:25px;padding-right:5px">The PIC32 control code running on the quadrotor is available on Github: <a href="https://git.io/adwquad">https://git.io/adwquad</a></p>
-                
-		 		<h4>Hardware Details</h4>
-                <p><img src="assets/img/portfolio/board_back.png" alt="" style="max-height:150px;float:right;padding-left:5px"><img src="assets/img/portfolio/board_front.png" alt="" style="max-height:150px;float:right;padding-left:20px">The quadrotor platform uses four simple brushed DC motors for the rotors. I chose to drive them with simple N-channel MOSFETs with a PWM signal. A pair of motors is run using a single 2-channel package. Wireless communication to a computer station is implemented using a XBEE wireless chip over a serial communication protocol. A PIC32 chip serves as the main controller on-board the quadrotor, receiving position feedback from the computer station connected to the Kinect. The loop rate on the Kinect feedback is 30Hz.</p>
+		 		<p>I completed a summer internship at the Technical University of Munich with a focus on controlling industrial robot arms with a haptic joystick. I was involved in implementing communication protocols to interface a KUKA CR6/2 Robot System with a controlling computer configured with the QNX Real-time Operating System.  The programming environment used was Simulink with the RT-Lab software for interfacing with the QNX system. The second area of work involves interfacing the joystick with the QNX system which is accomplished using a Windows host computer for the joystick and relaying coordinates to the QNX controlled computer via a UDP connection. The final area of work has involved workspace control of the robot as well as singularity avoidance in the inverse kinematics algorithms of the robot controller.</p>
 
-                <h4>Controller Details</h4>
-                <p>
-                A simple LQR controller runs on the quadrotor itself from a reduced model representing the inertial properties of the quadrotor. On-board feedback is provided from a 6-axis gyro/accelerometer package using a complementarity filter for position control. For autonomous hover, absolute position feedback is necessary to prevent significant drift; therefore, the Kinect is used to provide that feedback. The Point Cloud Library (PCL) is used for data processing from the Kinect signal. A Euclidean cluster extraction algorithm is then used to extract the point cloud for the quadrotor and a centroid calculation is made to determine the quadrotor position.
+		 		<h4>Implementation Details</h4>
+                <p>The RSI protocol, defined by KUKA, requires that the maximum interpolation cycle must be no greater 12ms; i.e., the data must be received by the user, processed, and sent back to the robot controller within a 12ms interval.  If this 12ms interval passes without any reception of data by the robot, the robot with stop with an error code.</p>
+                <p>The controller was designed so that sending and receiving commands could be performed asynchronously on the QNX.  In the send block, there is an existing command to wait for a reply before the next send.  This reply is given by the receive block after getting a packet from the robot controller.  So, the QNX receives a packet, notifies the send block that it is ready to send a packet, and then after sending, the QNX must wait to receive another packet before sending.  This allows for synchronization of the asynchronous functions to ensure stable execution.
                 </p>
-            </div>
-		 	<div class="col-xs-12" style="text-align:center">                
-                <img src="assets/img/portfolio/quads2.jpg" alt="" style="max-height:300px;padding:10px">
-                <img src="assets/img/portfolio/quads3.jpg" alt="" style="max-height:300px;padding:10px">
+                <p>In addition to sending the position information, the haptic joystick also receives the force information via the same UDP connection. The QNX system sends the two force values via a similar block structure as the RSI interface blocks. The two force values for the x-y axis are sent and then the controller waits for the reply packet with the three robot position values.  The received force values are then converted from Newtons to the range given by the joystick function and then relayed to the joystick via a predefined function.</p>
+                <p>To help with singularities, a pseudoinverse method was used to provide an accurate path for the robot to travel with a scaling on the velocity vector to a maximum norm velocity. One remaining issue was that the orientation of the tool center point was not always constant in the world coordinate system.  The Jacobian matrix appears to work in the world coordinate system; however, there are some inconsistencies between the coordinate systems which still had to be investigated.
+                <p style="text-align:center;margin-left:auto;margin-right:auto;"><img src="assets/img/portfolio/simulink.jpg" alt="" style="max-height:350px;padding-left:20px">
+                </p>
             </div>
 	 	</div>
 	 </div>
@@ -125,28 +121,28 @@
             <div class="row">
 				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
 					<div>
-                        <img src="assets/img/portfolio/gibbot.jpg" alt="">
-                        <a href="gibbot.html">
-                        <span class="text-content hidden-xs hidden-sm"><h4>Mechatronics Redesign of the Gibbot</h4></span>
-                        <span class="text-tablet hidden-md hidden-lg"><h4>Mechatronics Redesign of the Gibbot</h4></span></a>
-					</div>
-				</div>
-                <div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
-					<div>
-                        <img src="assets/img/portfolio/ros_demo.jpg" alt="">
-                        <a href="rostrep.html">
-                        <span class="text-content hidden-xs hidden-sm"><h4>ROS Bridge for Trep</h4></span>
-                        <span class="text-tablet hidden-md hidden-lg"><h4>ROS Bridge for Trep</h4></span></a>
-					</div>
-				</div>   
-                <div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
-					<div>
                         <img src="assets/img/portfolio/baxter.jpg" alt="">
                         <a href="baxter.html">
                         <span class="text-content hidden-xs hidden-sm"><h4>Maximizing Fisher Information with Baxter</h4></span>
                         <span class="text-tablet hidden-md hidden-lg"><h4>Maximizing Fisher Information with Baxter</h4></span></a>
 					</div>
 				</div>
+				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
+					<div>
+                        <img src="assets/img/portfolio/pendulum.jpg" alt="">
+                        <a href="pendulum.html">
+                        <span class="text-content hidden-xs hidden-sm"><h4>Information Optimization of a Double Pendulum</h4></span>
+                        <span class="text-tablet hidden-md hidden-lg"><h4>Information Optimization of a Double Pendulum</h4></span></a>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4 col-lg-3 nopadding portfolio-item">
+					<div>
+                        <img src="assets/img/portfolio/smartflap.jpg" alt="">
+                        <a href="helicopter.html">
+                        <span class="text-content hidden-xs hidden-sm"><h4>Control Allocation for a Helicopter with On-Blade Flaps</h4></span>
+                        <span class="text-tablet hidden-md hidden-lg"><h4>Control Allocation for a Helicopter with On-Blade Flaps</h4></span></a>
+					</div>
+				</div>                
             </div><!-- portfolio -->
         </div><!-- portfolio container -->
 	 </div><!--/Portfoliowrap -->
