@@ -53,11 +53,11 @@ a {
 	padding: 0;
 	margin: 0;
 	text-decoration: none; 
-	-webkit-transition: background-color .4s linear, color .4s linear;
-	-moz-transition: background-color .4s linear, color .4s linear;
-	-o-transition: background-color .4s linear, color .4s linear;
-	-ms-transition: background-color .4s linear, color .4s linear;
-	transition: background-color .4s linear, color .4s linear;
+	-webkit-transition: background-color .2s linear, color .2s linear;
+	-moz-transition: background-color .2s linear, color .2s linear;
+	-o-transition: background-color .2s linear, color .2s linear;
+	-ms-transition: background-color .2s linear, color .2s linear;
+	transition: background-color .2s linear, color .2s linear;
 }
 a:hover,
 a:focus {
@@ -92,6 +92,7 @@ a:focus {
 .navbar-brand {
 	font-family: 'Raleway', sans-serif;
 	font-weight: 900;
+	font-size: 21px;
 }
 
 .navbar-header .navbar-brand {
@@ -101,7 +102,7 @@ a:focus {
 .navbar-default .navbar-nav > li > a {
 	color: white;
 	font-weight: 700;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .navbar-default .navbar-nav > li > a:hover {
@@ -125,7 +126,7 @@ a:focus {
 .dropdown-menu > li > a {
 	color: white;
 	font-weight: 700;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .btn-theme {
@@ -254,23 +255,20 @@ a:focus {
 }
 
 #portfoliowrap {
-  background-color: #95a5b7;
+  background-color: #e0e4eb;
   text-align: center;
   display: block;
 }
 
 #portfoliowrap h3 {
-	color: white;
     padding-top:20px;
 }
 
 #portfoliowrap h4, #portfoliowrap h5 {
-	color: white;
 	font-weight: 400;
 }
 
 .text-content {
-  color: white;
   cursor: pointer;
   position: absolute;
   height: 100%;
@@ -299,7 +297,6 @@ div.portfolio-item div:hover span.text-content {
 }
 
 .text-tablet {
-  color: white;
   cursor: pointer;
   position: absolute;
   height: 100%;
@@ -341,7 +338,7 @@ div.portfolio-item div:hover span.text-content {
 }
 
 #education {
-    background-color: #95a5b7;
+    background-color: #e0e4eb;
 }
 #educationwrap {
 	padding-top: 40px;
@@ -367,7 +364,7 @@ div.portfolio-item div:hover span.text-content {
 }
 
 #publications {
-    background-color: #95a5b7;
+    background-color: #e0e4eb;
 }
 #publicationswrap {
 	padding-top: 40px;
@@ -403,7 +400,12 @@ div.portfolio-item div:hover span.text-content {
 }
 
 .project h4 {
+  font-size: 19px;
   padding-top: 15px;
+}
+
+.project p {
+  font-size: 16px;
 }
 
 .tpl6 h3
@@ -425,7 +427,7 @@ div.portfolio-item div:hover span.text-content {
 {
 	height:100%;
 	width:100%;
-	background-color:#00b3fe;
+	background-color:#0099ff;
 	background-color:rgba(0,179,254,.9);
 	text-align:center;
 }
@@ -490,7 +492,7 @@ div.portfolio-item div:hover span.text-content {
 /* General Tweaks */
 
 #blue {
-	background: #00b3fe;
+	background: #0099ff;
 	margin-top: 60px;
 	padding-top: 25px;
 	padding-bottom: 25px;
